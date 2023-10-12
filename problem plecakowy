@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+// Struktura reprezentująca przedmiot
+struct Item {
+    double weight;
+    double value;
+};
+
+// Funkcja porównująca przedmioty według stosunku wartości do wagi
+bool compareItems(const Item& a, const Item& b) {
+    return (a.value / a.weight) > (b.value / b.weight);
+}
+
+// Funkcja rozwiązująca ciągły problem plecakowy
+double solveContinuousKnapsack(std::vector<Item>& items, double capacity) {
+    // Sortujemy przedmioty według stosunku wartości do wagi (malejąco)
+    std::sort(items.begin(), items.end(), compareItems);
+
+    double totalValue = 0.0;
+    double remainingCapacity = capacity;
+
+    for (const Item& item : items) {
+        if (remainingCapacity >= item.weight) {
+            // Możemy wziąć cały przedmiot
+            totalValue += item.value;
+            remainingCapacity -= item.weight;
+        } else {
+            // W przeciwnym razie bierzemy tylko część przedmiotu
+            totalValue += (remainingCapacity / item.weight) * item.value;
+            break; // Wszystkie dostępne miejsce w plecaku zostało wykorzystane
+        }
+    }
+
+    return totalValue;
+}
+
+int main() {
+    int n;
+    double capacity;
+    std::cout << "Podaj liczbę przedmiotów: ";
+    std::cin >> n;
+    std::cout << "Podaj pojemność plecaka: ";
+    std::cin >> capacity;
+
+    std::vector<Item> items(n);
+
+    for (int i = 0; i < n; i++) {
+        std::cout << "Podaj wagę i wartość przedmiotu " << i + 1 << ": ";
+        std::cin >> items[i].weight >> items[i].value;
+    }
+
+    double maxValue = solveContinuousKnapsack(items, capacity);
+    std::cout << "Maksymalna wartość plecaka: " << maxValue << std::endl;
+
+    return 0;
+}
