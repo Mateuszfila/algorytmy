@@ -33,3 +33,4 @@ int main() {
 
     return 0;
 }
+Ten program oblicza silnię liczby całkowitej zarówno za pomocą rekurencji, jak i iteracji. Proszę pamiętać, że rekurencja może być mniej efektywna dla dużych wartości n, ponieważ może prowadzić do przepełnienia stosu (stack overflow), w przeciwieństwie do iteracji.
