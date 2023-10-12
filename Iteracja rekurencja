@@ -1,0 +1,35 @@
+#include <iostream>
+
+// Obliczanie silni za pomocą rekurencji
+unsigned long long silniaRekurencyjnie(unsigned int n) {
+    if (n == 0) {
+        return 1;
+    }
+    return n * silniaRekurencyjnie(n - 1);
+}
+
+// Obliczanie silni za pomocą iteracji
+unsigned long long silniaIteracyjnie(unsigned int n) {
+    unsigned long long wynik = 1;
+    for (unsigned int i = 1; i <= n; ++i) {
+        wynik *= i;
+    }
+    return wynik;
+}
+
+int main() {
+    unsigned int n;
+
+    std::cout << "Podaj liczbę całkowitą n: ";
+    std::cin >> n;
+
+    // Obliczanie silni za pomocą rekurencji
+    unsigned long long wynikRekurencyjnie = silniaRekurencyjnie(n);
+    std::cout << "Silnia " << n << " (rekurencja): " << wynikRekurencyjnie << std::endl;
+
+    // Obliczanie silni za pomocą iteracji
+    unsigned long long wynikIteracyjnie = silniaIteracyjnie(n);
+    std::cout << "Silnia " << n << " (iteracja): " << wynikIteracyjnie << std::endl;
+
+    return 0;
+}
