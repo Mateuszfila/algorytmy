@@ -56,3 +56,4 @@ int main() {
 
     return 0;
 }
+Powyszy skrypt rozwiązuje ciągły problem plecakowy (Continuous Knapsack Problem), w którym można brać część przedmiotów. W ciągłym problemie plecakowym przedmioty mają wartości i wagi wyrażone jako liczby rzeczywiste, a celem jest maksymalizacja sumy wartości przedmiotów umieszczonych w plecaku, uwzględniając pojemność plecaka. Program oblicza, ile każdego przedmiotu można umieścić w plecaku w skali ciągłej, aby osiągnąć maksymalną wartość, uwzględniając ich stosunek wartości do wagi.
