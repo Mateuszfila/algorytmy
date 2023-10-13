@@ -1,0 +1,102 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Struktura reprezentująca przedmiot
+struct Item {
+    double value; // Wartość przedmiotu
+    double weight; // Waga przedmiotu
+};
+
+// Funkcja porównująca dwa przedmioty według ich wartości na jednostkę wagi
+bool compare(Item a, Item b) {
+    return (a.value / a.weight) > (b.value / b.weight);
+}
+
+// Funkcja rozwiązująca ciągły problem plecakowy
+double solveKnapsack(vector<Item> items, double capacity) {
+    // Posortuj przedmioty malejąco według ich wartości na jednostkę wagi
+    sort(items.begin(), items.end(), compare);
+
+    // Ustaw zmienną current_weight na 0 i zmienną total_value na 0
+    double current_weight = 0;
+    double total_value = 0;
+
+    // Dla każdego przedmiotu w posortowanym zbiorze
+    for (int i = 0; i < items.size(); i++) {
+        // Jeśli current_weight plus waga przedmiotu jest mniejsza lub równa pojemności plecaka
+        if (current_weight + items[i].weight <= capacity) {
+            // Dodaj cały przedmiot do plecaka
+            // Zwiększ current_weight o wagę przedmiotu i total_value o wartość przedmiotu
+            current_weight += items[i].weight;
+            total_value += items[i].value;
+        }
+        // W przeciwnym razie
+        else {
+            // Oblicz, ile miejsca zostało w plecaku
+            double remaining_space = capacity - current_weight;
+            // Dodaj część przedmiotu do plecaka proporcjonalnie do remaining_space
+            // Zwiększ total_value o wartość części przedmiotu
+            total_value += items[i].value * (remaining_space / items[i].weight);
+            // Zakończ pętlę
+            break;
+        }
+    }
+
+    // Zwróć total_value jako optymalną wartość przedmiotów w plecaku
+    return total_value;
+}
+
+// Główna funkcja testująca algorytm
+int main() {
+    // Zadeklaruj zmienną n reprezentującą liczbę przedmiotów
+    int n;
+
+    // Wyświetl komunikat zachęcający użytkownika do wpisania liczby przedmiotów
+    cout << "Wpisz liczbę przedmiotów: ";
+
+    // Wczytaj liczbę przedmiotów z klawiatury i przypisz ją do zmiennej n
+    cin >> n;
+
+    // Zadeklaruj wektor typu Item o rozmiarze n
+    vector<Item> items(n);
+
+    // Wyświetl komunikat zachęcający użytkownika do wpisania wartości i wag każdego przedmiotu
+    cout << "Wpisz wartość i wagę każdego przedmiotu:\n";
+
+    // W pętli wczytaj wartości i wagi każdego przedmiotu z klawiatury i przypisz je do odpowiednich pól wektora items
+    for (int i = 0; i < n; i++) {
+        // Wyświetl numer przedmiotu, który jest aktualnie wprowadzany
+        cout << "Przedmiot " << i + 1 << ": ";
+        // Wczytaj wartość i wagę przedmiotu z klawiatury 
+        cin >> items[i].value >> items[i].weight;
+        // Wyświetl znak nowej linii, aby oddzielić kolejny przedmiot
+        cout << "\n";
+    }
+
+    // Zadeklaruj zmienną typu double reprezentującą pojemność plecaka
+    double capacity;
+
+    // Wyświetl komunikat zachęcający użytkownika do wpisania pojemności plecaka
+    cout << "Wpisz pojemność plecaka: ";
+
+    // Wczytaj pojemność plecaka z klawiatury i przypisz ją do zmiennej capacity
+    cin >> capacity;
+
+    // Wywołaj funkcję solveKnapsack i wyświetl wynik
+    double result = solveKnapsack(items, capacity);
+    cout << "Optymalna wartość przedmiotów w plecaku wynosi: " << result << endl;
+
+    return 0;
+}
+Wpisz liczbę przedmiotów: 3
+Wpisz wartość i wagę każdego przedmiotu:
+Przedmiot 1: 60 10
+
+Przedmiot 2: 100 20
+
+Przedmiot 3: 120 30
+
+Wpisz pojemność plecaka: 50
+Optymalna wartość przedmiotów w plecaku wynosi: 240
