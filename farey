@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <utility>
+
+using namespace std;
+
+void farey(int n) {
+    vector<pair<int, int>> farey_sequence;
+    farey_sequence.push_back({0, 1});
+    farey_sequence.push_back({1, 1});
+
+    for (int i = 2; i <= n; ++i) {
+        int j = 0;
+        while (j < farey_sequence.size() - 1) {
+            pair<int, int> a = farey_sequence[j];
+            pair<int, int> b = farey_sequence[j + 1];
+
+            if (a.second + b.second == i) {
+                farey_sequence.insert(farey_sequence.begin() + j + 1, {a.first + b.first, a.second + b.second});
+                ++j;
+            }
+            ++j;
+        }
+    }
+
+    for (const auto& fraction : farey_sequence) {
+        cout << fraction.first << "/" << fraction.second << ", ";
+    }
+}
+
+int main() {
+    int n;
+    cout << "Podaj liczbę: ";
+    cin >> n;
+
+    farey(n);
+
+    return 0;
+}
