@@ -1,47 +1,43 @@
 #include <iostream>
 using namespace std;
 
-// Funkcja, która zwraca maksymalną wartość, jaką można uzyskać, pakując n przedmiotów o wagach w[] i wartościach c[] do plecaka o pojemności W
-int knapsack(int n, int W, int w[], int c[]) {
-    // Tworzymy tablicę A o rozmiarze (n+1) x (W+1)
-    int A[n+1][W+1];
-
-    // Inicjalizujemy pierwszy wiersz i pierwszą kolumnę zerami
-    for (int j = 0; j <= W; j++) {
-        A[0][j] = 0;
-    }
-    for (int i = 0; i <= n; i++) {
-        A[i][0] = 0;
-    }
-
-    // Wypełniamy resztę tablicy według wzoru
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= W; j++) {
-            if (w[i-1] <= j) { // Jeśli możemy zmieścić i-ty przedmiot do plecaka o pojemności j
-                // Wybieramy maksimum z dwóch opcji: nie brać i-tego przedmiotu lub brać go i dodać jego wartość
-                A[i][j] = max(A[i-1][j], A[i-1][j-w[i-1]] + c[i-1]);
-            }
-            else { // Jeśli nie możemy zmieścić i-tego przedmiotu do plecaka o pojemności j
-                // Nie bierzemy go i zachowujemy poprzednią wartość
-                A[i][j] = A[i-1][j];
-            }
-        }
-    }
-
-    // Zwracamy optymalną wartość jako ostatni element tablicy
-    return A[n][W];
+int max(int x, int y) {
+   return (x > y) ? x : y;
 }
 
-// Główna funkcja programu
+int plecak(int W, int w[], int v[], int n) {
+   int i, wt;
+   int K[n + 1][W + 1];
+
+   for (i = 0; i <= n; i++) {
+      for (wt = 0; wt <= W; wt++) {
+         if (i == 0 || wt == 0)
+            K[i][wt] = 0;
+         else if (w[i - 1] <= wt)
+            K[i][wt] = max(v[i - 1] + K[i - 1][wt - w[i - 1]], K[i - 1][wt]);
+         else
+            K[i][wt] = K[i - 1][wt];
+      }
+   }
+   return K[n][W];
+}
+
 int main() {
-    // Przykładowe dane wejściowe
-    int n = 2; // Liczba przedmiotów
-    int W = 5; // Pojemność plecaka
-    int w[] = {2, 4}; // Tablica wag przedmiotów
-    int c[] = {1, 2}; // Tablica wartości przedmiotów
-
-    // Wywołujemy funkcję knapsack i wyświetlamy wynik
-    cout << "Maksymalna wartość, jaką można uzyskać, pakując przedmioty do plecaka, to: " << knapsack(n, W, w, c) << endl;
-
-    return 0;
+   cout << "Podaj liczbę przedmiotów w plecaku:";
+   int n, W;
+   cin >> n;
+   int v[n], w[n];
+   
+   for (int i = 0; i < n; i++) {
+      cout << "Podaj wartość i wagę dla przedmiotu " << i << ":";
+      cin >> v[i];
+      cin >> w[i];
+   }
+   
+   cout << "Podaj pojemność plecaka";
+   cin >> W;
+   
+   cout << plecak(W, w, v, n);
+   
+   return 0;
 }
