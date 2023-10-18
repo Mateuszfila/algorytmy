@@ -25,17 +25,34 @@ int plecak(int W, int w[], int v[], int n) {
 int main() {
    cout << "Podaj liczbę przedmiotów w plecaku:";
    int n, W;
-   cin >> n;
+   
+   if (!(cin >> n) || n < 0) {
+      cout << "Błąd: Proszę podać dodatnią liczbę całkowitą.";
+      return 1;
+   }
+   
    int v[n], w[n];
    
    for (int i = 0; i < n; i++) {
       cout << "Podaj wartość i wagę dla przedmiotu " << i << ":";
-      cin >> v[i];
-      cin >> w[i];
+      
+      if (!(cin >> v[i]) || v[i] < 0) {
+         cout << "Błąd: Proszę podać dodatnią liczbę całkowitą dla wartości.";
+         return 1;
+      }
+      
+      if (!(cin >> w[i]) || w[i] < 0) {
+         cout << "Błąd: Proszę podać dodatnią liczbę całkowitą dla wagi.";
+         return 1;
+      }
    }
    
    cout << "Podaj pojemność plecaka";
-   cin >> W;
+   
+   if (!(cin >> W) || W < 0) {
+      cout << "Błąd: Proszę podać dodatnią liczbę całkowitą dla pojemności.";
+      return 1;
+   }
    
    cout << plecak(W, w, v, n);
    
