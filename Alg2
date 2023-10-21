@@ -1,0 +1,43 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    int numerator, denominator;
+    cout << "Podaj licznik ułamka: ";
+    cin >> numerator;
+    cout << "Podaj mianownik ułamka: ";
+    cin >> denominator;
+
+    if (denominator == 0) {
+        cout << "Błąd: Dzielenie przez zero." << endl;
+        return 1;
+    }
+
+    if (numerator >= denominator || (numerator == 0 && denominator != 1)) {
+        cout << "Błąd: Ułamek niewłaściwy." << endl;
+        return 1;
+    }
+
+    // Sprawdzenie, czy ułamek jest prosty
+    if (numerator == 0) {
+        cout << "Błąd: Ułamek prosty." << endl;
+        return 1;
+    }
+
+    cout << "Rozkład egipski ułamka: " << numerator << "/" << denominator << " = ";
+
+    while (numerator > 0) {
+        int nextDenominator = (denominator + numerator - 1) / numerator;
+        cout << "1/" << nextDenominator;
+        numerator = numerator * nextDenominator - denominator;
+        denominator = denominator * nextDenominator;
+        if (numerator > 0) {
+            cout << " + ";
+        }
+    }
+
+    cout << endl;
+
+    return 0;
+}
