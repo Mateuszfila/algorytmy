@@ -1,1 +1,49 @@
+#include <iostream>
+
+// Struktura do przechowywania ułamków
+struct Fraction {
+    int numerator;   // Licznik
+    int denominator; // Mianownik
+};
+
+// Funkcja do obliczania i wypisywania ułamków Fareya
+void farey(int n) {
+    Fraction f1 = {0, 1};    // Pierwszy ułamek
+    Fraction f2 = {1, n};    // Drugi ułamek
+    Fraction temp;           // Zmienna tymczasowa do przechowywania ułamka pośredniego
+    int k;                   // Współczynnik k
+
+    std::cout << "0/1 1/" << n; // Wypisanie początkowych ułamków
+
+    while (f2.denominator > 1) {
+        k = (n + f1.denominator) / f2.denominator; // Obliczenie współczynnika k
+        temp = f1;                                // Przypisanie f1 do zmiennej tymczasowej
+        f1 = f2;                                  // Przypisanie f2 do f1
+        f2.numerator = f2.numerator * k - temp.numerator; // Obliczenie nowego licznika f2
+        f2.denominator = f2.denominator * k - temp.denominator; // Obliczenie nowego mianownika f2
+
+        std::cout << " " << f2.numerator << "/" << f2.denominator; // Wypisanie obliczonego ułamka
+    }
+
+    std::cout << std::endl; // Zakończenie linii
+}
+
+int main() {
+    int n;
+
+    do {
+        std::cout << "Podaj liczbę (nie większą niż 12): ";
+        std::cin >> n;
+
+        if (n > 12) {
+            std::cout << "Liczba nie może być większa od 12.\n";
+        }
+    } while (n > 12);
+
+    for (int i = 1; i <= n; i++) {
+        farey(i); // Wywołanie funkcji farey dla kolejnych n
+    }
+
+    return 0;
+}
 
