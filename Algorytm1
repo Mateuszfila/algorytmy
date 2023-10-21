@@ -1,0 +1,53 @@
+#include <iostream>
+
+using namespace std;
+
+// Funkcja do obliczania największego wspólnego dzielnika (NWD)
+int findGCD(int a, int b) {
+    if (b == 0) {
+        return a;
+    }
+    return findGCD(b, a % b);
+}
+
+int main() {
+    int numerator, denominator;
+    cout << "Podaj licznik ułamka: ";
+    cin >> numerator;
+    cout << "Podaj mianownik ułamka: ";
+    cin >> denominator;
+
+    if (denominator == 0) {
+        cout << "Błąd: Dzielenie przez zero." << endl;
+        return 1;
+    }
+
+    if (numerator >= denominator) {
+        cout << "Błąd: Ułamek niewłaściwy." << endl;
+        return 1;
+    }
+
+    // Sprawdzenie, czy ułamek jest prosty
+    if (findGCD(numerator, denominator) == 1) {
+        cout << "Ułamek jest prosty." << endl;
+    } else {
+        cout << "Ułamek nie jest prosty." << endl;
+    }
+
+    cout << "Rozkład egipski ułamka: " << numerator << "/" << denominator << " = ";
+
+    while (numerator > 0) {
+        int nextDenominator = (denominator + numerator - 1) / numerator;
+        cout << "1/" << nextDenominator;
+        numerator = numerator * nextDenominator - denominator;
+        denominator = denominator * nextDenominator;
+        if (numerator > 0) {
+            cout << " + ";
+        }
+    }
+
+    cout << endl;
+
+    return 0;
+}
+
