@@ -1,0 +1,79 @@
+
+Rozkład egipski ułamka.
+
+Default (GPT-3.5)
+
+User
+#include <iostream>
+ 
+using namespace std;
+ 
+int main() {
+    int numerator, denominator;
+    cout << "Podaj licznik ułamka: ";
+    cin >> numerator;
+    cout << "Podaj mianownik ułamka: ";
+    cin >> denominator;
+ 
+    if (denominator == 0) {
+        cout << "Błąd: Dzielenie przez zero." << endl;
+        return 1;
+    }
+ 
+    if (numerator >= denominator || (numerator == 1 && denominator != 1)) {
+        cout << "Błąd: Ułamek niewłaściwy." << endl;
+        return 1;
+    }
+ 
+    // Sprawdzenie, czy ułamek jest prosty
+    if (numerator == 0) {
+        cout << "Błąd: Ułamka nie da się przedstawić w rozkładzie egipskim." << endl;
+        return 1;
+    }
+ 
+    cout << "Rozkład egipski ułamka: " << numerator << "/" << denominator << " = ";
+ 
+    while (numerator > 0) {
+        int nextDenominator = (denominator + numerator - 1) / numerator;
+        cout << "1/" << nextDenominator;
+        numerator = numerator * nextDenominator - denominator;
+        denominator = denominator * nextDenominator;
+        if (numerator > 0) {
+            cout << " + ";
+        }
+    }
+ 
+    cout << endl;
+ 
+    return 0;
+}
+Do powyższego kodu napisz sprawozdanie opisz mi co to rozkład egipski jakiś przykład i opisz ten kod w skrócie jak działa, dodatkowo wypisz ograniczenia tego kodu jakie są 
+
+ChatGPT
+Rozkład egipski to matematyczna metoda rozkładu ułamków własnych na sumę ułamków jednostkowych o mianownikach większych niż jeden. Celem jest przedstawienie ułamka w sposób składający się z możliwie mniejszej liczby ułamków jednostkowych. Rozkład ten ma wiele zastosowań w matematyce, w tym w teorii liczb, a także w problemach związanych z algorytmami i obliczeniami numerycznymi.
+
+Kod, który dostarczyłeś, jest implementacją algorytmu rozkładu egipskiego ułamka. Poniżej jest skrócona analiza działania tego kodu:
+
+Początkowo użytkownik jest proszony o podanie licznika i mianownika ułamka.
+
+Następnie kod sprawdza trzy warunki:
+a. Jeśli mianownik wynosi zero, program wyświetla komunikat o błędzie "Błąd: Dzielenie przez zero." i kończy się.
+b. Jeśli licznik jest większy lub równy mianownikowi lub licznik wynosi 1, ale mianownik jest różny od 1, program wyświetla "Błąd: Ułamek niewłaściwy." i kończy się.
+c. Jeśli licznik wynosi zero, program wyświetla "Błąd: Ułamka nie da się przedstawić w rozkładzie egipskim." i kończy się.
+
+Jeśli żaden z powyższych błędów nie wystąpił, program przechodzi do właściwego rozkładu egipskiego ułamka.
+
+Algorytm rozkładu egipskiego jest realizowany za pomocą pętli while. W każdej iteracji pętli obliczane jest kolejne "1/x" (gdzie x to nowy mianownik) i odejmowana jest odpowiednia część od ułamka. Proces ten kontynuowany jest, dopóki licznik jest większy od zera.
+
+Wynik rozkładu egipskiego ułamka jest wypisywany na ekranie.
+
+Ograniczenia tego kodu to:
+
+Nie obsługuje ułamków niewłaściwych (licznik większy lub równy mianownikowi).
+Nie uwzględnia sytuacji, w której ułamek jest równy 1 (1/1).
+Nie obsługuje ułamków dziesiętnych ani ułamków wymiernych, ponieważ działa tylko na ułamkach właściwych.
+Może wykazywać ograniczone zachowanie w przypadku dużych liczb z powodu problemów z zakresem wartości.
+Przykład działania:
+Jeśli użytkownik wprowadzi licznik 4 i mianownik 7, kod ten rozłoży ten ułamek na "1/2 + 1/7".
+
+Rozkład ten jest przykładem rozkładu egipskiego, gdzie ułamek jest wyrażany jako suma ułamków jednostkowych o mianownikach większych niż jeden. W tym przypadku, 4/7 jest przedstawione jako 1/2 + 1/7.
