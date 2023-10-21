@@ -1,0 +1,70 @@
+
+Kod oblicza ciągi Fareya
+
+Default (GPT-3.5)
+
+User
+#include <iostream>
+ 
+void farey(int n)
+{
+    typedef struct { int d, n; } frac;
+    frac f1 = {0, 1}, f2 = {1, n}, t;
+    int k;
+ 
+    std::cout << "0/1 1/" << n;
+    while (f2.n > 1) {
+        k = (n + f1.n) / f2.n;
+        t = f1, f1 = f2, f2 = { f2.d * k - t.d, f2.n * k - t.n };
+        std::cout << " " << f2.d << "/" << f2.n;
+    }
+ 
+    std::cout << std::endl;
+}
+ 
+int main()
+{
+    int n;
+ 
+    do {
+        std::cout << "Podaj liczbę (nie większą niż 12): ";
+        std::cin >> n;
+ 
+        if (n > 12) {
+            std::cout << "Liczba nie może być większa od 12.\n";
+        }
+    } while (n > 12);
+ 
+    for (int i = 1; i <= n; i++) {
+        farey(i);
+    }
+ 
+    return 0;
+}
+Opisz mi krok po kroku zasadę działania tego kodu jak robi i gdzie obliczenia co oblicza tylko jasno 
+
+ChatGPT
+Ten kod oblicza i wypisuje ciągi Fareya dla liczb naturalnych od 1 do "n," gdzie "n" jest liczbą wprowadzoną przez użytkownika. Ciągi Fareya to ciągi ułamków właściwych (czyli te, których licznik jest mniejszy od mianownika), które są posortowane w kolejności rosnącej. Oto kroki działania tego kodu:
+
+Deklaracja struktury frac: W kodzie jest zdefiniowana struktura frac, która reprezentuje ułamek jako parę licznika (n) i mianownika (d).
+
+W głównej funkcji main:
+a. Użytkownik jest proszony o podanie liczby całkowitej "n" (nie większej niż 12).
+b. Następuje sprawdzenie, czy "n" nie przekracza 12, i jeśli tak, użytkownik jest proszony ponownie o podanie właściwej wartości.
+c. Następnie, pętla for przechodzi od 1 do "n" i dla każdej liczby całkowitej "i" wywołuje funkcję farey(i).
+
+W funkcji farey(int n):
+a. Inicjalizacja dwóch ułamków f1 i f2, gdzie f1 to początkowy ułamek (0/1), a f2 to pierwszy ułamek w sekwencji (1/n).
+b. Wypisuje się początkowe wartości (0/1 i 1/n) na standardowym wyjściu.
+c. Następuje pętla while, która działa dopóki mianownik ułamka f2 jest większy niż 1.
+d. Wewnątrz pętli:
+
+Obliczane jest "k," które jest ilorazem "n+f1.n" i "f2.n".
+Wykonywane są operacje przesunięcia ułamka: t przechowuje wartość f1, f1 przyjmuje wartość f2, a f2 jest obliczane na podstawie reguły przesunięcia.
+Obliczony ułamek f2 jest wypisywany na standardowym wyjściu.
+e. Po zakończeniu pętli, na końcu wypisywane jest nowe linii.
+Wynikiem działania tego kodu jest wypisanie ciągów Fareya od 1/1 do 1/n, gdzie "n" to liczba podana przez użytkownika.
+
+
+
+
