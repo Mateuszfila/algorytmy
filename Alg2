@@ -40,4 +40,4 @@ int main() {
     cout << endl;
 
     return 0;
-}
+}Algorytm porównuje wartość dodanego przedmiotu z wartością plecaka bez uwzględniania tego przedmiotu i wybiera większą z tych dwóch opcji.
