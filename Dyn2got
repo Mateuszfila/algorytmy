@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int max(int x, int y) {
+   return (x > y) ? x : y;
+}
+
+int plecak(int W, int w[], int v[], int n) {
+   int i, wt;
+   int K[n + 1][W + 1];
+   for (i = 0; i <= n; i++) {
+      for (wt = 0; wt <= W; wt++) {
+         if (i == 0 || wt == 0)
+            K[i][wt] = 0;
+         else if (w[i - 1] <= wt)
+            K[i][wt] = max(v[i - 1] + K[i - 1][wt - w[i - 1]], K[i - 1][wt]);
+         else
+            K[i][wt] = K[i - 1][wt];
+      }
+   }
+   
+   // Nowa część kodu do śledzenia, które przedmioty zostały uwzględnione.
+   vector<int> uwzgPredmioty;
+   i = n;
+   wt = W;
+   while (i > 0 && wt > 0) {
+      if (K[i][wt] != K[i - 1][wt]) {
+         uwzgPredmioty.push_back(i - 1);  // Dodaj indeks przedmiotu do listy uwzględnionych.
+         wt -= w[i - 1];
+      }
+      i--;
+   }
+   
+   // Wyświetlenie uwzględnionych przedmiotów.
+   cout << "Uwzględnione przedmioty: ";
+   for (int j = uwzgPredmioty.size() - 1; j >= 0; j--) {
+      cout << uwzgPredmioty[j];
+      if (j > 0) {
+         cout << ", ";
+      }
+   }
+   cout << endl;
+   
+   return K[n][W];
+}
+
+int main() {
+   cout << "Podaj liczbę przedmiotów w plecaku:";
+   int n, W;
+   
+   if (!(cin >> n) || n <= 0) {
+      cout << "Błąd: Proszę podać dodatnią liczbę całkowitą większą od zera.";
+      return 1;
+   }
+   
+   int v[n], w[n];
+   
+   for (int i = 0; i < n; i++) {
+      cout << "Podaj wartość i wagę dla przedmiotu " << i << ":";
+      
+      if (!(cin >> v[i]) || v[i] < 0) {
+         cout << "Błąd: Proszę podać dodatnią liczbę całkowitą dla wartości.";
+         return 1;
+      }
+      
+      if (!(cin >> w[i]) || w[i] < 0) {
+         cout << "Błąd: Proszę podać dodatnią liczbę całkowitą dla wagi.";
+         return 1;
+      }
+   }
+   
+   cout << "Podaj pojemność plecaka";
+   
+   if (!(cin >> W) || W < 0) {
+      cout << "Błąd: Proszę podać dodatnią liczbę całkowitą dla pojemności.";
+      return 1;
+   }
+   
+   int wynik = plecak(W, w, v, n);
+   cout << "Maksymalna wartość plecaka: " << wynik << endl;
+   
+   return 0;
+}
