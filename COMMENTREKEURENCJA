@@ -1,0 +1,29 @@
+#include <iostream>
+
+// Funkcja do obliczania silni za pomocą rekurencji
+unsigned long long silniaRekurencyjnie(unsigned int n) {
+    // Warunek bazowy: jeśli n jest równe 0, zwróć 1
+    if (n == 0) {
+        return 1;
+    }
+    // Zwróć n pomnożone przez wynik silniaRekurencyjnie(n - 1)
+    return n * silniaRekurencyjnie(n - 1);
+}
+
+int main() {
+    // Deklaracja zmiennej n
+    unsigned int n;
+
+    // Prośba o wprowadzenie liczby całkowitej n
+    std::cout << "Podaj liczbę całkowitą n: ";
+    std::cin >> n;
+
+    // Obliczanie silni za pomocą rekurencji
+    unsigned long long wynikRekurencyjnie = silniaRekurencyjnie(n);
+
+    // Wyświetlanie wyniku
+    std::cout << "Silnia " << n << " (rekurencja): " << wynikRekurencyjnie << std::endl;
+
+    // Zakończenie programu
+    return 0;
+}
