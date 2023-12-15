@@ -1,0 +1,50 @@
+#include <iostream> // Biblioteka do obsługi wejścia/wyjścia
+#include <chrono> // Biblioteka do obsługi czasu
+#include <random> // Biblioteka do obsługi generatorów liczb losowych
+#include <vector> // Biblioteka do obsługi kontenerów typu vector
+
+using namespace std;
+
+// Funkcja sortująca tablicę metodą szybką
+void quickSort(vector<int>& arr, int low, int high) {
+    if (low < high) { // Sprawdzamy, czy są co najmniej dwa elementy do posortowania
+        int pivot = arr[high]; // Wybieramy element osiowy
+        int i = (low - 1); // Indeks mniejszego elementu
+
+        for (int j = low; j <= high - 1; j++) { // Przechodzimy przez tablicę
+            if (arr[j] < pivot) { // Jeżeli element jest mniejszy od osiowego, zamieniamy go z elementem o indeksie i
+                i++;
+                swap(arr[i], arr[j]);
+            }
+        }
+
+        swap(arr[i + 1], arr[high]); // Zamieniamy element osiowy z elementem o indeksie i+1
+        int pi = i + 1;
+
+        quickSort(arr, low, pi - 1); // Rekurencyjnie sortujemy elementy przed i po elemencie osiowym
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    const int n = 10000; // Zwiększamy liczbę elementów w tablicy
+    vector<int> arr(n); // Tworzymy tablicę o rozmiarze n
+
+    // Wypełniamy tablicę losowymi liczbami
+    random_device rd; // Tworzymy urządzenie do generowania liczb losowych
+    mt19937 gen(rd()); // Inicjalizujemy generator liczb losowych
+    uniform_int_distribution<int> dist(1, n); // Tworzymy rozkład jednostajny
+    for (int i = 0; i < n; i++) { // Wypełniamy tablicę losowymi liczbami
+        arr[i] = dist(gen);
+    }
+
+    // Pomiar czasu sortowania szybkiego
+    auto startQuickSort = chrono::high_resolution_clock::now(); // Rozpoczynamy pomiar czasu
+    quickSort(arr, 0, n - 1); // Sortujemy tablicę metodą szybką
+    auto stopQuickSort = chrono::high_resolution_clock::now(); // Kończymy pomiar czasu
+    auto durationQuickSort = chrono::duration_cast<chrono::milliseconds>(stopQuickSort - startQuickSort); // Obliczamy czas sortowania
+
+    cout << "Czas sortowania szybkiego: " << durationQuickSort.count() << " milisekundy" << endl; // Wyświetlamy czas sortowania
+
+    return 0;
+}
