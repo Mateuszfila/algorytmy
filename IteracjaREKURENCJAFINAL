@@ -1,0 +1,73 @@
+Iteracja a rekurencja
+Mateusz Fila
+Rekurencja i iteracja to dwie fundamentalne techniki stosowane w programowaniu do rozwiązania problemów, które wymagają wielokrotnego wykonania pewnych operacji. Choć obie mogą prowadzić do tego samego wyniku, różnią się pod względem struktury, wydajności i zastosowań.
+
+Rekurencja to metoda, w której funkcja wywołuje samą siebie, aby rozwiązać mniejsze instancje tego samego problemu. Jest elegancka i intuicyjna, ale może być kosztowna pod względem zużycia pamięci.
+
+Iteracja polega na użyciu pętli do wielokrotnego wykonania pewnych operacji. Jest zazwyczaj bardziej wydajna pod względem zużycia pamięci i czasu wykonania, ale może prowadzić do bardziej skomplikowanego kodu.
+Rekurencja:
+Rekurencja to technika, w której funkcja wywołuje samą siebie.
+W przypadku obliczania silni, funkcja silniaRekurencyjnie(n) wywołuje samą siebie z argumentem n - 1, aż n osiągnie wartość 0.
+Rekurencja jest elegancka i zazwyczaj prowadzi do prostszych rozwiązań, ale może być mniej wydajna i prowadzić do przekroczenia limitu stosu, jeśli głębokość rekurencji jest zbyt duża.
+Iteracja:
+
+Iteracja to technika, w której używamy pętli do powtarzania operacji.
+W przypadku obliczania silni, funkcja silniaIteracyjnie(n) używa pętli for do mnożenia kolejnych liczb od 1 do n.
+Iteracja jest zazwyczaj bardziej wydajna i nie prowadzi do przekroczenia limitu stosu, ale może prowadzić do bardziej skomplikowanego kodu, jeśli problem jest złożony.
+Obie metody prowadzą do tego samego wyniku, ale różnią się pod względem wydajności i złożoności kodu. Wybór między nimi zależy od konkretnego problemu i wymagań dotyczących wydajności.
+Program obliczający silnię za pomocą iteracji:
+
+#include <iostream>
+
+// Obliczanie silni za pomocą iteracji
+unsigned long long silniaIteracyjnie(unsigned int n) {
+    unsigned long long wynik = 1;
+    for (unsigned int i = 1; i <= n; ++i) {
+        wynik *= i;
+    }
+    return wynik;
+}
+
+int main() {
+    unsigned int n;
+
+    std::cout << "Podaj liczbę całkowitą n: ";
+    std::cin >> n;
+
+    // Obliczanie silni za pomocą iteracji
+    unsigned long long wynikIteracyjnie = silniaIteracyjnie(n);
+    std::cout << "Silnia " << n << " (iteracja): " << wynikIteracyjnie << std::endl;
+
+    return 0;
+}
+
+Program obliczający silnię za pomocą rekurencji:
+#include <iostream>
+
+// Obliczanie silni za pomocą rekurencji
+unsigned long long silniaRekurencyjnie(unsigned int n) {
+    if (n == 0) {
+        return 1;
+    }
+    return n * silniaRekurencyjnie(n - 1);
+}
+
+int main() {
+    unsigned int n;
+
+    std::cout << "Podaj liczbę całkowitą n: ";
+    std::cin >> n;
+
+    // Obliczanie silni za pomocą rekurencji
+    unsigned long long wynikRekurencyjnie = silniaRekurencyjnie(n);
+    std::cout << "Silnia " << n << " (rekurencja): " << wynikRekurencyjnie << std::endl;
+
+    return 0;
+}
+
+
+Wynik:
+Podaj liczbę całkowitą n: 5
+Silnia 5 (rekurencja): 120
+Silnia 5 (iteracja): 120
+
