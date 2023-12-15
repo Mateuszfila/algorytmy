@@ -1,0 +1,41 @@
+#include <iostream> // Biblioteka do obsługi wejścia/wyjścia
+#include <chrono> // Biblioteka do obsługi czasu
+#include <random> // Biblioteka do obsługi generatorów liczb losowych
+#include <vector> // Biblioteka do obsługi kontenerów typu vector
+
+using namespace std;
+
+// Funkcja sortująca tablicę metodą bąbelkową
+void bubbleSort(vector<int>& arr) {
+    int n = arr.size(); // Pobieramy rozmiar tablicy
+    for (int i = 0; i < n - 1; i++) { // Przechodzimy przez wszystkie elementy tablicy
+        for (int j = 0; j < n - i - 1; j++) { // Porównujemy każdy element z następnym
+            if (arr[j] > arr[j + 1]) { // Jeżeli element jest większy od następnego, zamieniamy je miejscami
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+int main() {
+    const int n = 10000; // Zwiększamy liczbę elementów w tablicy
+    vector<int> arr(n); // Tworzymy tablicę o rozmiarze n
+
+    // Wypełniamy tablicę losowymi liczbami
+    random_device rd; // Tworzymy urządzenie do generowania liczb losowych
+    mt19937 gen(rd()); // Inicjalizujemy generator liczb losowych
+    uniform_int_distribution<int> dist(1, n); // Tworzymy rozkład jednostajny
+    for (int i = 0; i < n; i++) { // Wypełniamy tablicę losowymi liczbami
+        arr[i] = dist(gen);
+    }
+
+    // Pomiar czasu sortowania bąbelkowego
+    auto startBubbleSort = chrono::high_resolution_clock::now(); // Rozpoczynamy pomiar czasu
+    bubbleSort(arr); // Sortujemy tablicę metodą bąbelkową
+    auto stopBubbleSort = chrono::high_resolution_clock::now(); // Kończymy pomiar czasu
+    auto durationBubbleSort = chrono::duration_cast<chrono::milliseconds>(stopBubbleSort - startBubbleSort); // Obliczamy czas sortowania
+
+    cout << "Czas sortowania bąbelkowego: " << durationBubbleSort.count() << " milisekundy" << endl; // Wyświetlamy czas sortowania
+
+    return 0;
+}
