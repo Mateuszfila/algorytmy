@@ -1,0 +1,206 @@
+Sortowanie
+Mateusz Fila
+114195
+
+Sortowanie to proces organizowania elementów według określonego porządku. Może to być porządek rosnący, malejący, leksykograficzny itp. Istnieje wiele różnych technik sortowania, a każda z nich ma swoje zalety i wady. Dwie popularne metody, które omówimy, to sortowanie bąbelkowe i sortowanie szybkie.
+
+Sortowanie bąbelkowe to prosty algorytm sortujący, który wielokrotnie przechodzi przez listę, porównuje sąsiednie elementy i zamienia je, jeśli są w złej kolejności. Proces ten jest powtarzany, aż do momentu, gdy nie ma więcej elementów do zamiany, co oznacza, że lista jest posortowana. Sortowanie bąbelkowe jest znane ze swojej prostoty, ale jest nieefektywne dla dużych list.
+
+Sortowanie szybkie, znane również jako sortowanie przez podział, to algorytm sortujący, który wybiera element z listy jako element osiowy, a następnie dzieli resztę listy na dwie części; jedną z elementami mniejszymi od osiowego i drugą z elementami większymi lub równymi osiowemu. Następnie sortuje te dwie części rekurencyjnie. Sortowanie szybkie jest znane ze swojej efektywności i jest powszechnie używane, pomimo faktu, że w najgorszym przypadku ma złożoność czasową O(n²), podobnie jak sortowanie bąbelkowe. Jednak w praktyce sortowanie szybkie jest zwykle szybsze, ponieważ jego średnia i oczekiwana złożoność czasowa wynosi O(n log n).
+Zasada działania:
+
+Sortowanie bąbelkowe: Porównuje sąsiednie elementy i zamienia je, jeśli są w złej kolejności. Proces ten jest powtarzany, aż do momentu, gdy nie ma więcej elementów do zamiany.
+Sortowanie szybkie: Wybiera element osiowy, a następnie dzieli tablicę na dwie części; jedną z elementami mniejszymi od osiowego i drugą z elementami większymi lub równymi osiowemu. Następnie sortuje te dwie części rekurencyjnie.
+Czas wykonania:
+
+W powyższym kodzie mierzymy czas wykonania obu algorytmów sortujących. Sortowanie bąbelkowe ma złożoność czasową O(n²), gdzie n to liczba elementów do posortowania. Z drugiej strony, sortowanie szybkie ma złożoność czasową O(n log n) w średnim przypadku, co czyni go szybszym dla dużych danych.
+Zastosowanie:
+
+Sortowanie bąbelkowe jest proste w implementacji, ale nie jest zalecane dla dużych zestawów danych ze względu na swoją kwadratową złożoność czasową.
+Sortowanie szybkie jest bardziej skomplikowane, ale jest zdecydowanie bardziej efektywne dla dużych zestawów danych.
+Stabilność:
+
+Sortowanie bąbelkowe jest stabilne, co oznacza, że zachowuje kolejność elementów o tej samej wartości.
+Sortowanie szybkie w podstawowej formie nie jest stabilne. Jednakże, może być zmodyfikowane, aby stać się stabilne kosztem zwiększenia złożoności pamięciowej.
+
+
+#include <iostream> // Biblioteka do obsługi wejścia/wyjścia
+#include <chrono> // Biblioteka do obsługi czasu
+#include <random> // Biblioteka do obsługi generatorów liczb losowych
+#include <vector> // Biblioteka do obsługi kontenerów typu vector
+
+using namespace std;
+
+// Funkcja sortująca tablicę metodą bąbelkową
+void bubbleSort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n - 1; i++) { // Przechodzimy przez wszystkie elementy tablicy
+        for (int j = 0; j < n - i - 1; j++) { // Porównujemy każdy element z następnym
+            if (arr[j] > arr[j + 1]) { // Jeżeli element jest większy od następnego, zamieniamy je miejscami
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+// Funkcja sortująca tablicę metodą szybką
+void quickSort(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pivot = arr[high]; // Wybieramy element osiowy
+        int i = (low - 1); // Indeks mniejszego elementu
+
+        for (int j = low; j <= high - 1; j++) { // Przechodzimy przez tablicę
+            if (arr[j] < pivot) { // Jeżeli element jest mniejszy od osiowego, zamieniamy go z elementem o indeksie i
+                i++;
+                swap(arr[i], arr[j]);
+            }
+        }
+
+        swap(arr[i + 1], arr[high]); // Zamieniamy element osiowy z elementem o indeksie i+1
+        int pi = i + 1;
+
+        quickSort(arr, low, pi - 1); // Rekurencyjnie sortujemy elementy przed i po elemencie osiowym
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    const int n = 10000; // Zwiększamy liczbę elementów w tablicy
+    vector<int> arr(n);
+
+    // Wypełniamy tablicę losowymi liczbami
+    random_device rd; // Tworzymy urządzenie do generowania liczb losowych
+    mt19937 gen(rd()); // Inicjalizujemy generator liczb losowych
+    uniform_int_distribution<int> dist(1, n); // Tworzymy rozkład jednostajny
+    for (int i = 0; i < n; i++) { // Wypełniamy tablicę losowymi liczbami
+        arr[i] = dist(gen);
+    }
+
+    // Pomiar czasu sortowania bąbelkowego
+    auto startBubbleSort = chrono::high_resolution_clock::now(); // Rozpoczynamy pomiar czasu
+    bubbleSort(arr); // Sortujemy tablicę metodą bąbelkową
+    auto stopBubbleSort = chrono::high_resolution_clock::now(); // Kończymy pomiar czasu
+    auto durationBubbleSort = chrono::duration_cast<chrono::milliseconds>(stopBubbleSort - startBubbleSort); // Obliczamy czas sortowania
+
+    cout << "Czas sortowania bąbelkowego: " << durationBubbleSort.count() << " milisekundy" << endl; // Wyświetlamy czas sortowania
+
+    // Resetujemy tablicę
+    for (int i = 0; i < n; i++) { // Ponownie wypełniamy tablicę losowymi liczbami
+        arr[i] = dist(gen);
+    }
+
+    // Pomiar czasu sortowania szybkiego
+    auto startQuickSort = chrono::high_resolution_clock::now(); // Rozpoczynamy pomiar czasu
+    quickSort(arr, 0, n - 1); // Sortujemy tablicę metodą szybką
+    auto stopQuickSort = chrono::high_resolution_clock::now(); // Kończymy pomiar czasu
+    auto durationQuickSort = chrono::duration_cast<chrono::milliseconds>(stopQuickSort - startQuickSort); // Obliczamy czas sortowania
+
+    cout << "Czas sortowania szybkiego: " << durationQuickSort.count() << " milisekundy" << endl; // Wyświetlamy czas sortowania
+
+    return 0;
+}
+Wynik:
+Czas sortowania bąbelkowego: 1009 milisekundy
+Czas sortowania szybkiego: 2 milisekundy
+
+Ten kod zawiera dwie różne metody sortowania: sortowanie bąbelkowe (bubbleSort) i sortowanie szybkie (quickSort). Oba algorytmy są używane do sortowania elementów w tablicy w porządku rosnącym.
+
+Funkcja bubbleSort działa poprzez porównywanie każdego elementu w tablicy z następnym elementem. Jeśli element jest większy od następnego, są one zamieniane. Proces ten jest powtarzany, aż nie będzie już żadnych elementów do zamiany.
+
+Funkcja quickSort działa na zasadzie “dziel i zwyciężaj”. Wybiera element “pivot” (tutaj jest to ostatni element tablicy), a następnie przesuwa wszystkie elementy mniejsze od pivot na lewo, a wszystkie większe na prawo. Następnie funkcja jest wywoływana rekurencyjnie dla lewej i prawej części tablicy.
+
+Główna funkcja main tworzy tablicę o rozmiarze n i wypełnia ją losowymi liczbami. Następnie mierzy czas wykonania obu algorytmów sortowania na tej samej tablicy. Po każdym sortowaniu, tablica jest resetowana do stanu początkowego.
+
+Sortowanie bąbelkowe:
+
+Sortowanie bąblekowe:
+#include <iostream>
+
+void swap(int& a, int& b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[i + 1], arr[high]);
+    return (i + 1);
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int arr[] = {64, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    quickSort(arr, 0, n - 1);
+
+    std::cout << "Posortowana tablica: ";
+    for (int i = 0; i < n; i++) {
+        std::cout << arr[i] << " ";
+    }
+    return 0;
+}
+
+Sortowanie szybkie:
+#include <iostream>
+
+void swap(int& a, int& b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[i + 1], arr[high]);
+    return (i + 1);
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int arr[] = {64, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    quickSort(arr, 0, n - 1);
+
+    std::cout << "Posortowana tablica: ";
+    for (int i = 0; i < n; i++) {
+        std::cout << arr[i] << " ";
+    }
+    return 0;
+}
